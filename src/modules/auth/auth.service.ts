@@ -5,13 +5,15 @@ import { MailService } from '../../utils/mailer/mail.service';
 import { Hash } from '../../utils/Hash';
 import { User, UsersService } from './../user';
 import { LoginPayload } from './login.payload';
+import { RegisterPayload } from './register.payload';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly jwtService: JwtService,
-    private readonly userService: UsersService
-  ) {}
+    private readonly userService: UsersService,
+    private readonly mailService: MailService
+  ) { }
 
   /**
    * Generate jwt token for user
@@ -55,7 +57,7 @@ export class AuthService {
   async validateUser(payload: LoginPayload): Promise<User> {
     let user: User;
     try {
-      user = await this.userService.getByEmail(payload.email, ['sessionInfo']);
+      user = await this.userService.getByEmail(payload.email);
       if (!user) {
         throw new HttpException(
           `INVALID_USERNAME_OR_PASSWORD`,
@@ -82,5 +84,16 @@ export class AuthService {
     } catch (err) {
       throw err;
     }
+  }
+
+  /**
+   * Register New User
+   *  
+   * @param payload RegisterPayload 
+   */
+  async signUp(payload: RegisterPayload) {
+    await this.userService.create(payload);
+    await this.mailService.sendEmail(payload.email);
+    return;
   }
 }

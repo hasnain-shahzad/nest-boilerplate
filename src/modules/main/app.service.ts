@@ -1,29 +1,11 @@
-import { HttpException, Injectable } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import { TypeOrmModuleAsyncOptions } from "@nestjs/typeorm";
 import { createDatabase } from "typeorm-extension";
-import { MailService } from "../../utils/mailer/mail.service";
-import { NodeEnv, ResponseCode, ResponseMessage } from "../../utils/enum";
-import { ContactUsDto } from "./commons/app.dto";
+import { NodeEnv } from "../../utils/enum";
 
 @Injectable()
 export class AppService {
-  constructor(private readonly mailerServie: MailService) {}
-
-  /**
-   * Send Contact Mail To Support
-   * @returns Chats
-   */
-  async sendMailToContact(payload: ContactUsDto): Promise<void> {
-    try {
-      await this.mailerServie.sendContactUsEmail(payload);
-      return;
-    } catch (err) {
-      throw new HttpException(
-        ResponseMessage.EMAIL_SEND_ERROR,
-        ResponseCode.INTERNAL_ERROR
-      );
-    }
-  }
+  constructor() {}
 
   /**
    * Configures The App Environment

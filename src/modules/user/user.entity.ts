@@ -59,8 +59,8 @@ export class User extends BaseEntity {
 
   fromDto(payload: RegisterPayload): User {
     this.name = payload.name;
-    this.age = payload.age;
-    this.gender = payload.gender;
+    this.email = payload.email;
+    this.password = payload.password;
     return this;
   }
 }

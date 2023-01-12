@@ -4,7 +4,29 @@ import { ContactUsDto } from "modules/main/commons/app.dto";
 
 @Injectable()
 export class MailService {
-  constructor(private mailerService: MailerService) {}
+  constructor(private mailerService: MailerService) { }
+
+  /**
+   * Send Account Confirmation Email To User On Signup
+   * @param contact
+   */
+  public async sendEmail(email: string): Promise<void> {
+    return new Promise<void>(async (resolve, reject) => {
+      try {
+        await this.mailerService.sendMail({
+          to: email,
+          subject: "Signup Email",
+          html: `
+          <div>Hi  ${email}</div><br>
+          <div>Your account has been created successfully.</div><br>
+          `,
+        });
+        resolve();
+      } catch (err) {
+        reject();
+      }
+    });
+  }
 
   /**
    * Send Account Confirmation Email To User On Signup
@@ -148,5 +170,28 @@ export class MailService {
     </div>
 </div>`,
     });
+  }
+
+  /**
+   * Configure Mailer Agent for NodeMailer Module
+   * @returns 
+   */
+  static configureNodeMailer() {
+    return {
+      transport: {
+        service: process.env.EMAIL_SMTP_SERVICE,
+        host: process.env.EMAIL_SMTP_HOST,
+        port: Number(process.env.EMAIL_SMTP_PORT),
+        ignoreTLS: false,
+        secure: false,
+        auth: {
+          user: process.env.EMAIL_SMTP_USER,
+          pass: process.env.EMAIL_SMTP_PASS,
+        },
+      },
+      defaults: {
+        from: process.env.EMAIL_SMTP_USER,
+      }
+    };
   }
 }

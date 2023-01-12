@@ -1,85 +1,13 @@
 import {
-  IsBoolean,
-  IsEmail,
   IsNotEmpty,
-  IsNumberString,
-  IsOptional,
-  IsString,
-  Length,
-  Matches,
-  MaxLength,
-  MinLength,
+  IsString
 } from 'class-validator';
 import { IsValidCountry } from '../../common/validator/country.validator';
 import { IsValidPhoneNumber } from '../../common/validator/phone.validator';
-import { ResponseMessage } from '../../../utils/enum';
-import { SameAs } from './../../common/validator/same-as.validator';
 import { Transform } from 'class-transformer';
 import {
   parsePhoneNumberFromString,
 } from 'libphonenumber-js';
-
-export class NickNameDto {
-  @IsNotEmpty()
-  nickName: string;
-}
-
-export class ForgotPasswordDto {
-  @IsNotEmpty()
-  @Matches(
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$&+,:;=?@#|'<>.^*()_%!-])[A-Za-z\d$&+,:;=?@#|'<>.^*()_%!-]{8,50}$/,
-    {
-      message: ResponseMessage.INVALID_PASSWORD,
-    },
-  )
-  password: string;
-}
-
-export class EmailDto {
-  @IsEmail({}, { message: ResponseMessage.INVALID_EMAIL })
-  @IsNotEmpty()
-  @Matches(
-    /^[a-zA-Z0-9_\.\-]*[a-zA-Z0-9]+\@(([a-zA-Z0-9\-]){3,30}\.)+([a-zA-Z0-9]{2,5})$/,
-    { message: ResponseMessage.INVALID_EMAIL },
-  )
-  @Matches(/^(?!.*[\-\_\.]{2}).*$/, { message: ResponseMessage.INVALID_EMAIL })
-  email: string;
-}
-
-export class CreatePasswordDto {
-  @IsNotEmpty()
-  @Matches(
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$&+,:;=?@#|'<>.^*()_%!-])[A-Za-z\d$&+,:;=?@#|'<>.^*()_%!-]{8,50}$/,
-    {
-      message: ResponseMessage.INVALID_PASSWORD,
-    },
-  )
-  password: string;
-
-  @SameAs('password', { message: `PASSWORD_NOT_MATCH` })
-  passwordConfirmation: string;
-}
-
-export class ConfirmPasswordDto extends EmailDto {
-  @IsNotEmpty()
-  @Matches(
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$&+,:;=?@#|'<>.^*()_%!-])[A-Za-z\d$&+,:;=?@#|'<>.^*()_%!-]{8,50}$/,
-    {
-      message: ResponseMessage.INVALID_PASSWORD,
-    },
-  )
-  password: string;
-
-  @SameAs('password', { message: `PASSWORD_NOT_MATCH` })
-  passwordConfirmation: string;
-
-  @IsNumberString({}, { message: ResponseMessage.INVALID_VERIFICATION_CODE })
-  @MaxLength(6)
-  @MinLength(6)
-  code: string;
-}
-
-
 
 export class PhoneNumberDTO {
   @IsNotEmpty()

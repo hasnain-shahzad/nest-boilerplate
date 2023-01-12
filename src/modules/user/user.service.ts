@@ -71,7 +71,7 @@ export class UsersService {
    * @param payload
    * @returns
    */
-  async create(payload: UserFillableFields) {
+  async create(payload: RegisterPayload) {
     const user = await this.getByEmail(payload.email);
 
     if (user) {
@@ -79,8 +79,11 @@ export class UsersService {
         'User with provided email already created.',
       );
     }
-
-    return await this.userRepository.save(payload);
+    const passwordHash = await Hash.make(payload.password);
+    payload.password = passwordHash;
+    const newUser = new User().fromDto(payload);
+    await this.userRepository.save(newUser);
+    return;
   }
 
   /**
@@ -101,8 +104,6 @@ export class UsersService {
    * @returns
    */
   public async updateUserInfo(user: User, payload: RegisterPayload) {
-    user.age = payload.age;
-    user.gender = payload.gender;
     user.name = payload.name;
     return await this.userRepository.save(user);
   }

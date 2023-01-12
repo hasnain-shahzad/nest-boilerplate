@@ -18,6 +18,8 @@ import {
   ResponseMessage,
 } from '../../utils/enum';
 import { Response } from 'express';
+import { RegisterPayload } from './register.payload';
+
 @Controller('api/auth')
 export class AuthController {
   constructor(
@@ -32,6 +34,19 @@ export class AuthController {
   /*                                    LOGIN
   /*
   /********************************************************************************************************************/
+  @Post('signup')
+  async signup(
+    @Body() payload: RegisterPayload,
+    @Res() res: Response,
+  ): Promise<Response> {
+    this.loggerService.log(`POST auth/login ${LoggerMessages.API_CALLED}`);
+    await this.authService.signUp(payload);
+    return res.status(ResponseCode.SUCCESS).send({
+      statusCode: ResponseCode.SUCCESS,
+      message: ResponseMessage.SUCCESS
+    });
+  }
+  
   @Post('login')
   async login(
     @Body() payload: LoginPayload,

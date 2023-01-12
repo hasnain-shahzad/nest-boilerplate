@@ -3,6 +3,13 @@ import { Module } from "@nestjs/common";
 import { MailService } from "./mail.service";
 
 @Module({
+  imports:[
+    MailerModule.forRootAsync({
+      useFactory: async () => {
+        return MailService.configureNodeMailer();
+      },
+    }),
+  ],
   providers: [MailService],
   exports: [MailService], // 👈 export for DI
 })
