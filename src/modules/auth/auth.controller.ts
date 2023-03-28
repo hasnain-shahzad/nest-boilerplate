@@ -39,7 +39,7 @@ export class AuthController {
     @Body() payload: RegisterPayload,
     @Res() res: Response,
   ): Promise<Response> {
-    this.loggerService.log(`POST auth/login ${LoggerMessages.API_CALLED}`);
+    this.loggerService.log(`POST auth/signup ${LoggerMessages.API_CALLED}`);
     await this.authService.signUp(payload);
     return res.status(ResponseCode.SUCCESS).send({
       statusCode: ResponseCode.SUCCESS,
