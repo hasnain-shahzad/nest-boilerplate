@@ -7,5 +7,5 @@ LABEL=$(git log -1 --format=%h)
 # Build docker of current directory
 echo "Build docker image with label "$LABEL
 
-docker build -t chuzi/chuzi-backend:$LABEL .
+docker build -t sofit/sofit-backend:$LABEL .
 

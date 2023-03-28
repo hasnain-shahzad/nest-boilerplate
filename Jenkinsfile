@@ -13,7 +13,7 @@
 // ***********************
 
 
-def CONTAINER_NAME="chuzi/chuzi-backend"
+def CONTAINER_NAME="sofit/sofit-backend"
 def CONTAINER_TAG="0.0.1"
 
 
